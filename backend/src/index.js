@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 
 import cities from '../routers/cities.js';
+import weather from '../routers/weather.js';
 
 const app = express();
 const port = 3000;
@@ -15,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/cities', cities);
+app.use('/weather', weather);
 
 app.listen(port, () => {
   console.log(`Backend has started and listening at http://localhost:${port}`);

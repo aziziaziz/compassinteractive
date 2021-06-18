@@ -1,28 +1,58 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div class="app-main">
+		<table id="cityTable" class="city-table">
+			<thead>
+				<tr>
+					<th>city</th>
+					<th>state</th>
+					<th>Country</th>
+					<th>Lat/Lon</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+/* eslint-disable */
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+	components: {},
+	data: function () {
+		return {
+		};
+	},
+	props: {},
+	methods: {},
+	mounted() {
+		$("#cityTable").DataTable({
+      // data: this.testData,
+      // ajax: 'http://localhost:3000/cities?page=100',
+      // dataSrc: 'result',
+      ajax: {
+        url: 'http://localhost:3000/cities',
+        dataSrc: 'result'
+      },
+      columns : [
+        { data : 'city' },
+        { data : 'state' },
+        { data : 'country' },
+        { data : 'latlong' }
+      ],
+      oLanguage: {
+        sSearch: 'Search City'
+      },
+      processing: true,
+      serverSide: true,
+		});
+	},
+	watch: {},
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss" scoped>
+.app-main {
+  .city-table {
+    border: 1px solid black;
+  }
 }
 </style>

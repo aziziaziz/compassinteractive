@@ -28,4 +28,37 @@ async function getCities(req, res) {
   res.status(200).send(await result.toArray());
 }
 
+app.get('/', getAllCities);
+async function getAllCities(req, res) {
+  let cityColl = await cities.getCollection();
+  let page = req.query.page;
+  let totalCount = await cityColl.countDocuments();
+  let totalPages = Math.ceil(totalCount / 10);
+
+  let search = req.query.search;
+  let sort = req.query.order[0];
+
+  if (page > totalPages) {
+    res.status(400).send(`Max page is ${totalPages}`);
+    return;
+  }
+  
+  let columns = [ 'city', 'state', 'country', 'latlong' ];
+  let sortKey = columns[parseInt(sort['column'])];
+  let sortObj = {};
+  sortObj[sortKey] = sort['dir'] == 'asc' ? 1 : -1;
+
+  let searchResult = cityColl.find({ city: { $regex: `^${search.value}`, $options: 'i' } });
+
+  let result = searchResult.sort(sortObj).limit(parseInt(req.query.length)).skip(parseInt(req.query.start));
+  let resultJson = await result.toArray();
+  resultJson.forEach(r => delete r['_id']);
+  res.status(200).send({
+    draw: req.query.draw,
+    recordsFiltered: await searchResult.count(),
+    recordsTotal: parseInt(totalCount),
+    result: resultJson
+  });
+}
+
 export default app;

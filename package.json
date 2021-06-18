@@ -1,0 +1,6 @@
+{
+  "scripts": {
+    "init": "(cd frontend && npm install) && (cd backend && npm install)",
+    "run-all": "(cd frontend && npm run serve) & (cd backend && npm run dev)"
+  }
+}

@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <div class="app-main">
+    <div class="title">Weather Forecast by City</div>
+    <div class="sub-title">Click on the table below to<br />view the weather forecast</div>
+    <div class="sub-title">You can also search your city<br />at the top right of the table</div>
+
     <table id="cityTable" class="city-table hover">
 			<thead>
 				<tr>
@@ -11,7 +15,7 @@
 			</thead>
 		</table>
 
-    <div>
+    <div style="margin-top: 10px">
       Cannot find your city? Click
       <router-link to="/Add">here</router-link>
       to add your city.
@@ -103,89 +107,104 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.city-table {
-  border: 1px solid black;
-}
+.app-main {
+  text-align: center;
 
-.weather-popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(128,128,128,0.5);
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  > .city-table {
+    border: 1px solid black;
+  }
 
-  > .weather-content {
-    background-color: white;
-    border-radius: 10px;
-    width: 90%;
-    height: 75%;
-    max-width: 500px;
-    padding: 10px;
+  > .weather-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128,128,128,0.5);
+    z-index: 10;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    position: relative;
-    overflow: auto;
+    justify-content: center;
 
-    > .title {
-      font-size: 1.5em;
-    }
-
-    > .temperature {
+    > .weather-content {
+      background-color: white;
+      border-radius: 10px;
+      width: 90%;
+      height: 75%;
+      max-width: 500px;
+      padding: 10px;
       display: flex;
-      align-items: flex-start;
-
-      > .value {
-        font-size: 3em;
-      }
-    }
-
-    > .description {
-      display: flex;
+      flex-direction: column;
       align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: auto;
 
-      > img {
-        background-color: rgba(128,128,128,0.3);
+      > .title {
+        font-size: 1.5em;
       }
 
-      > * {
-        margin: 5px;
+      > .temperature {
+        display: flex;
+        align-items: flex-start;
+
+        > .value {
+          font-size: 3em;
+        }
+      }
+
+      > .description {
+        display: flex;
+        align-items: center;
+
+        > img {
+          background-color: rgba(128,128,128,0.3);
+        }
+
+        > * {
+          margin: 5px;
+        }
+      }
+
+      > div > .label {
+        font-weight: bold;
+        font-size: 1.2em;
+        margin-bottom: 5px;
+      }
+
+      > .close-popup {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        background-color: red;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        width: 30px;
+        border-radius: 100%;
+        cursor: pointer;
+      }
+
+      > .units {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        cursor: pointer;
       }
     }
+  }
 
-    > div > .label {
-      font-weight: bold;
-      font-size: 1.2em;
-      margin-bottom: 5px;
-    }
+  > .title {
+    font-size: 2em;
+    font-weight: bold;
+  }
 
-    > .close-popup {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      background-color: red;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 30px;
-      width: 30px;
-      border-radius: 100%;
-      cursor: pointer;
-    }
-
-    > .units {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      cursor: pointer;
-    }
+  > .sub-title {
+    font-size: 1.3em;
+    margin: 5px 0;
+    margin-bottom: 10px;
   }
 }
 </style>

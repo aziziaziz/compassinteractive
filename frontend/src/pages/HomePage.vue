@@ -11,6 +11,12 @@
 			</thead>
 		</table>
 
+    <div>
+      Cannot find your city? Click
+      <router-link to="/Add">here</router-link>
+      to add your city.
+    </div>
+
 		<div v-if="selectedWeather" class="weather-popup">
 			<div class="weather-content">
 				<div class="title">Weather for<br />{{ selectedCity['city'] }}, {{ selectedCity['state'] }}, {{ selectedCity['country'] }}</div>

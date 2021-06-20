@@ -9,39 +9,32 @@ const cities = new mongoCon('cinteractive', 'cities');
 
 const defaultCities = require('../files/cities.json');
 
-app.get('/default', insertDefault);
-async function insertDefault(req, res) {
+// app.get('/default', insertDefault);
+async function insertDefault() {
   let mongo = await cities.getCollection();
   let insert = await mongo.insertMany(defaultCities);
 
   if (insert.insertedCount > 0) {
-    res.status(200).send(`Successfully inserted ${insert.insertedCount} default cities in db!`);
+    // res.status(200).send(`Successfully inserted ${insert.insertedCount} default cities in db!`);
+    return true;
   } else {
-    res.status(503).send('There was an error occurred while inserting your default cities. Please try again.');
+    // res.status(503).send('There was an error occurred while inserting your default cities. Please try again.');
+    return false;
   }
-}
-
-app.get('/:city', getCities);
-async function getCities(req, res) {
-  let city = req.params.city;
-  let result = await (await cities.getCollection()).find({ city: { $regex: `^${city}`, $options: 'i' } });
-  res.status(200).send(await result.toArray());
 }
 
 app.get('/', getAllCities);
 async function getAllCities(req, res) {
   let cityColl = await cities.getCollection();
-  let page = req.query.page;
   let totalCount = await cityColl.countDocuments();
-  let totalPages = Math.ceil(totalCount / 10);
+
+  if (totalCount == 0) {
+    await insertDefault();
+    totalCount = await cityColl.countDocuments();
+  }
 
   let search = req.query.search;
   let sort = req.query.order[0];
-
-  if (page > totalPages) {
-    res.status(400).send(`Max page is ${totalPages}`);
-    return;
-  }
   
   let columns = [ 'city', 'state', 'country', 'latlong' ];
   let sortKey = columns[parseInt(sort['column'])];

@@ -1,6 +1,6 @@
 <template>
 	<div class="app-main">
-		<table id="cityTable" class="city-table">
+		<table id="cityTable" class="city-table hover">
 			<thead>
 				<tr>
 					<th>city</th>
@@ -24,7 +24,7 @@ export default {
 	props: {},
 	methods: {},
 	mounted() {
-		$("#cityTable").DataTable({
+		let table = $("#cityTable").DataTable({
       // data: this.testData,
       // ajax: 'http://localhost:3000/cities?page=100',
       // dataSrc: 'result',
@@ -43,6 +43,12 @@ export default {
       },
       processing: true,
       serverSide: true,
+			bLengthChange: false
+		});
+
+		$('#cityTable tbody').on('click', 'tr', function(e) {
+			let data = table.row(this).data();
+			console.log(data);
 		});
 	},
 	watch: {},

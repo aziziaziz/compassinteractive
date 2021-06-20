@@ -5,6 +5,10 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
 const app = express.Router();
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.raw());
+
 const cities = new mongoCon('cinteractive', 'cities');
 
 const defaultCities = require('../files/cities.json');
@@ -52,6 +56,19 @@ async function getAllCities(req, res) {
     recordsTotal: parseInt(totalCount),
     result: resultJson
   });
+}
+
+app.post('/Add', insertCity);
+async function insertCity(req, res) {
+  let body = req.body;
+  let mongo = await cities.getCollection();
+  let added = await mongo.insertOne(body);
+
+  if (added.insertedCount > 0) {
+    res.status(200).send(true);
+  } else {
+    res.status(400).send(false);
+  }
 }
 
 export default app;

@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoCon from '../modules/mongo.js';
+import axios from 'axios';
 
 const weatherColl = new mongoCon('cinteractive', 'weather');
 
@@ -11,16 +12,15 @@ async function getWeatherByCity(req, res) {
   res.status(200).send(await mongo.find({ city: { $regex: `^${req.params.city}`, $options: 'i' } }).toArray());
 }
 
-app.get('/', addDefaultWeather);
-async function addDefaultWeather(req, res) {
-  let mongo = await weatherColl.getCollection();
-  let items = [
-    { city: 'Klang', weather: 'hot' },
-    { city: 'Shah Alam', weather: 'cloudy' }
-  ];
+async function getLiveWeather(req, res) {
+  // let mongo = await weatherColl.getCollection();
+  // let items = [
+  //   { city: 'Klang', weather: 'hot' },
+  //   { city: 'Shah Alam', weather: 'cloudy' }
+  // ];
 
-  let insert = await mongo.insertMany(items);
-  res.status(200).send(`Insert ${insert.insertedCount} rows`);
+  // let insert = await mongo.insertMany(items);
+  // res.status(200).send(`Insert ${insert.insertedCount} rows`);
 }
 
 export default app;
